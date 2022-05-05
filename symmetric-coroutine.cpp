@@ -2,6 +2,8 @@
 #include <iostream>
 #include <vector>
 #include <queue>
+#include <thread>
+
 
 void elegant()
 {
@@ -19,7 +21,7 @@ void elegant()
                 {
                     int product = rand();
                     store.push(product);
-                    std::cout << "[Producer] " << product << std::endl;
+                    std::cout << "[Producer<" << std::this_thread::get_id() << ">] " << product << std::endl;
                 }
                 yield(*other_b);
             }
@@ -34,7 +36,7 @@ void elegant()
                 {
                     int product = store.back();
                     store.pop();
-                    std::cout << "[Consumer] " << product << std::endl;
+                    std::cout << "[Consumer<" << std::this_thread::get_id() << ">] " << product << std::endl;
                 }
                 yield(*other_a);
             }
@@ -48,6 +50,7 @@ void elegant()
 
 int main(int argc, char const *argv[])
 {
+    std::cout << "[Main<" << std::this_thread::get_id() << ">] " << std::endl;
     elegant();
     return 0;
 }
